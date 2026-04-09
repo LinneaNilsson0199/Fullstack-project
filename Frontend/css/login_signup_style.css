@@ -1,0 +1,50 @@
+
+
+/* =========================
+   LOGIN
+   ========================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 5px;
+}
+
+form{
+    border-radius: 15px;
+    background: rgb(185, 195, 168);
+}
+#loginForm{
+
+  margin: 20px auto;
+  padding: 50px;
+}
+.login-subtext{
+    text-align: center;
+    margin: 0px;
+}
+
+.loginBtn{
+  display: block;
+  margin: 20px auto;
+  background: #cfd6d0;
+  padding: 0.5rem 1rem;
+  border: 2px solid #605b5b;
+  border-radius: 10px;
+}
+
+.loginBtn:hover{
+    text-decoration: underline; 
+}
+
+/* =========================
+   SIGN UP
+   ========================= */
+
+#loginlocate{
+    font-weight: 700;
+}
+
+#loginlocate:hover{
+    text-decoration: underline;
+}
