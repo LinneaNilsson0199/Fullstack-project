@@ -1,0 +1,34 @@
+/* =========================
+    UPLOAD FILE SECTION
+   ========================= */
+.upload-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.upload-box {
+  border: 2px dashed #333;
+  padding: 40px;
+  width: 300px;
+  text-align: center;
+  background: rgb(248, 246, 242);
+  border-radius: 10px;
+}
+
+.upload-box p {
+  margin-bottom: 10px;
+}
+
+.upload-box button {
+  padding: 10px 20px;
+  background: rgb(123, 156, 111);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-box button:hover {
+  background-color: darkgreen;
+}
