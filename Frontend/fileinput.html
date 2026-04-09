@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyGuard | File</title>
+    <link rel="stylesheet" href="css/layout_style.css">
+    <link rel="stylesheet" href="css/fileupload_style.css">
+
+</head>
+<body>
+    <div class="page"> 
+        <header class="page_head">
+            <div class="head_brand">
+                <img id ="web_logo" src="assets/talkthreads-logo.png" alt="TinyGuard logo">
+                <h1>TinyGuard</h1>
+            </div>
+
+            <nav class="head_nav">
+                <a href="index.html">Home</a>
+                <a href="fileinput.html">Input file</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+                <a href="About.html">About</a>
+            </nav>
+        </header>
+        <main>
+            <div class="box-container">
+                
+                <section class="box-card">
+                <h2>Welcome!</h2>
+
+                <div class="upload-container">
+                    <div class="upload-box" id="drop-area">
+                        <p>Insert file</p>
+                        <button id="uploadBtn">Upload file</button>
+                        <input type = "file" id="Inputfile" hidden/>
+
+                        <p id="file-name"></p>
+                    </div>
+                </div>
+                </section>
+            </div>
+        </main>
+
+    </div>    
+      <script type="module" src="scripts/script.js"></script>
+
+</body>
+</html>
