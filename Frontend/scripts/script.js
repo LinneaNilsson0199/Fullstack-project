@@ -3,6 +3,7 @@ const uploadBtn  = document.getElementById('uploadBtn');
 const fileName = document.getElementById("file-name");
 const dropArea = document.getElementById("drop-area")
 
+if (Inputfile && uploadBtn && fileName && dropArea) {
 uploadBtn.addEventListener("click", () => {
     Inputfile.click();
 })
@@ -33,4 +34,4 @@ dropArea.addEventListener("drop", (e) => {
     fileName.textContent = "Selected file: " + file.name;
 });
 
-
+}
