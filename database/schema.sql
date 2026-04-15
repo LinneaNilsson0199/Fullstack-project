@@ -110,6 +110,3 @@ VALUES (
   'low'
 );
 
-ALTER TABLE scan_results
-ADD CONSTRAINT scan_results_status_check
-CHECK (status IN ('new', 'reviewed', 'dismissed'));
