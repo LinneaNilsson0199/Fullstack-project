@@ -2,18 +2,24 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const pool = require("./db");
-const registerRoutes = require("./register");
+console.log("THIS server.js is running");
 
 const app = express();
-const loginRoutes = require("./login");
+const pool = require("./db");
 
 app.use(cors());
 app.use(express.json());
-loginRoutes(app, pool);
-registerRoutes(app, pool);
 
-// ROUTES FOR TABLE: USERS
+// Load route modules
+require("./login")(app, pool);
+require("./register")(app, pool);
+
+// Simple test route
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
+
+// USERS
 app.get("/users", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -31,30 +37,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.post("/users", async (req, res) => {
-  try {
-    const { full_name, email, password_hash, role_id } = req.body;
-
-    const result = await pool.query(
-      `
-      INSERT INTO users (full_name, email, password_hash, role_id)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, full_name, email, role_id, created_at;
-      `,
-      [full_name, email, password_hash, role_id]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({
-      error: "Failed to create user",
-      details: error.message,
-    });
-  }
-});
-
-// ROUTES FOR TABLE: ROLES
+// ROLES
 app.get("/roles", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -72,30 +55,7 @@ app.get("/roles", async (req, res) => {
   }
 });
 
-app.post("/roles", async (req, res) => {
-  try {
-    const { role_name } = req.body;
-
-    const result = await pool.query(
-      `
-      INSERT INTO roles (role_name)
-      VALUES ($1)
-      RETURNING *;
-      `,
-      [role_name]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error("Error creating role:", error);
-    res.status(500).json({
-      error: "Failed to create role",
-      details: error.message,
-    });
-  }
-});
-
-// ROUTES FOR TABLE: PARENT_CHILD
+// PARENT_CHILD
 app.get("/parent-child", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -138,6 +98,17 @@ app.post("/parent-child", async (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 
+process.on("exit", (code) => {
+  console.log("Node process exiting with code:", code);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught exception:", err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled rejection:", reason);
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-})
+});
