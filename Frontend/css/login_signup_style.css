@@ -14,7 +14,7 @@ form{
     border-radius: 15px;
     background: rgb(185, 195, 168);
 }
-#loginForm{
+.formlayout{
 
   margin: 20px auto;
   padding: 50px;
