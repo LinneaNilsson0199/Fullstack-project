@@ -3,12 +3,15 @@ const cors = require("cors");
 require("dotenv").config();
 
 const pool = require("./db");
+const registerRoutes = require("./register");
 
 const app = express();
+const loginRoutes = require("./login");
 
 app.use(cors());
 app.use(express.json());
-
+loginRoutes(app, pool);
+registerRoutes(app, pool);
 
 // ROUTES FOR TABLE: USERS
 app.get("/users", async (req, res) => {
