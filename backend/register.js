@@ -1,7 +1,14 @@
 const bcrypt = require("bcrypt");
 
+console.log("register.js loaded");
+
 module.exports = (app, pool) => {
+  console.log("Register route mounted");
+
   app.post("/register", async (req, res) => {
+    console.log("REGISTER HIT");
+    console.log("Request body:", req.body);
+
     try {
       const { full_name, email, password, role } = req.body;
 
@@ -34,6 +41,7 @@ module.exports = (app, pool) => {
       }
 
       const role_id = roleResult.rows[0].id;
+      console.log("Resolved role_id:", role_id);
 
       const saltRounds = 10;
       const password_hash = await bcrypt.hash(password, saltRounds);
@@ -46,6 +54,8 @@ module.exports = (app, pool) => {
         `,
         [full_name, email, password_hash, role_id]
       );
+
+      console.log("User created:", result.rows[0]);
 
       res.status(201).json({
         message: "User registered successfully",
