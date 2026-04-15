@@ -93,12 +93,12 @@ if (signupForm) {
       alert("Passwords do not match.");
       return;
     }
-
+/*
     let role_id = null;
 
     if (selectedRole.value === "parent") role_id = 2;
     if (selectedRole.value === "child") role_id = 3;
-
+*/
     try {
       const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
@@ -109,7 +109,7 @@ if (signupForm) {
           full_name,
           email,
           password,
-          role_id
+          role: selectedRole.value //role_id
         })
       });
 
