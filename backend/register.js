@@ -3,11 +3,11 @@ const bcrypt = require("bcrypt");
 module.exports = (app, pool) => {
   app.post("/register", async (req, res) => {
     try {
-      const { full_name, email, password, role_id } = req.body;
+      const { full_name, email, password, role } = req.body;
 
-      if (!full_name || !email || !password) {
+      if (!full_name || !email || !password || !role) {
         return res.status(400).json({
-          error: "full_name, email, and password are required",
+          error: "full_name, email, password, and role are required",
         });
       }
 
@@ -22,6 +22,19 @@ module.exports = (app, pool) => {
         });
       }
 
+      const roleResult = await pool.query(
+        "SELECT id FROM roles WHERE role_name = $1",
+        [role]
+      );
+
+      if (roleResult.rows.length === 0) {
+        return res.status(400).json({
+          error: "Invalid role selected",
+        });
+      }
+
+      const role_id = roleResult.rows[0].id;
+
       const saltRounds = 10;
       const password_hash = await bcrypt.hash(password, saltRounds);
 
@@ -31,7 +44,7 @@ module.exports = (app, pool) => {
         VALUES ($1, $2, $3, $4)
         RETURNING id, full_name, email, role_id, created_at;
         `,
-        [full_name, email, password_hash, role_id || null]
+        [full_name, email, password_hash, role_id]
       );
 
       res.status(201).json({
