@@ -75,15 +75,21 @@ app.get("/parent-child", async (req, res) => {
 
 app.post("/parent-child", async (req, res) => {
   try {
-    const { parent_id, child_id } = req.body;
+    const { parent_user_id, child_user_id } = req.body;
+
+    if (!parent_user_id || !child_user_id) {
+      return res.status(400).json({
+        error: "parent_user_id and child_user_id are required",
+      });
+    }
 
     const result = await pool.query(
       `
-      INSERT INTO parent_child (parent_id, child_id)
+      INSERT INTO parent_child (parent_user_id, child_user_id)
       VALUES ($1, $2)
       RETURNING *;
       `,
-      [parent_id, child_id]
+      [parent_user_id, child_user_id]
     );
 
     res.status(201).json(result.rows[0]);
@@ -109,6 +115,7 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (reason) => {
   console.error("Unhandled rejection:", reason);
 });
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
