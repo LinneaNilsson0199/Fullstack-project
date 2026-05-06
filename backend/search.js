@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 class AhoCorasickNode {
   constructor() {
     this.children = new Map();
@@ -18,12 +16,15 @@ class AhoCorasick {
   buildTrie(patterns) {
     for (const pattern of patterns) {
       let node = this.root;
+
       for (const char of pattern) {
         if (!node.children.has(char)) {
           node.children.set(char, new AhoCorasickNode());
         }
+
         node = node.children.get(char);
       }
+
       node.outputs.push(pattern);
     }
   }
@@ -103,22 +104,4 @@ function isWholeWord(text, start, end) {
   return validBefore && validAfter;
 }
 
-const textFile = "input.txt";
-const wordsFile = "words.txt";
-
-try {
-  const words = fs
-    .readFileSync(wordsFile, "utf8")
-    .split(/\r?\n/)
-    .map(word => word.trim().toLowerCase())
-    .filter(word => word.length > 0);
-
-  const text = fs.readFileSync(textFile, "utf8").toLowerCase();
-
-  const automaton = new AhoCorasick(words);
-  const found = automaton.search(text);
-
-  console.log(found ? "not clear" : "clear");
-} catch (error) {
-  console.error("Error:", error.message);
-}
+module.exports = AhoCorasick;
