@@ -3,6 +3,7 @@ const user = JSON.parse(localStorage.getItem("tinyguardUser"));
 const currentPage = window.location.pathname.split("/").pop();
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
+const logoutBtn = document.getElementById("logoutBtn");
 
 console.log("login_signup_script.js loaded");
 console.log("loginForm:", loginForm);
@@ -132,4 +133,24 @@ if (signupForm) {
       alert("Could not connect to server.");
     }
   });
+}
+
+
+//LOGOUT
+if (user) {
+  if (loginLink) loginLink.style.display = "none";
+  if (signupLink) signupLink.style.display = "none";
+  if (logoutBtn) logoutBtn.style.display = "inline-block";
+} else {
+  if (logoutBtn) logoutBtn.style.display = "none";
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    localStorage.removeItem("tinyguardUser");
+    alert("You have been logged out");
+    window.location.href = "login.html"
+  })
 }
