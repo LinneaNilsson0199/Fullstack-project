@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TinyGuard | File</title>
-    <link rel="stylesheet" href="css/layout_style.css">
-    <link rel="stylesheet" href="css/fileupload_style.css">
 
+    <link rel="stylesheet" href="css/layout_style.css" />
+    <link rel="stylesheet" href="css/fileupload_style.css" />
 </head>
+
 <body>
-    <div class="page"> 
+    <div class="page">
+
         <header class="page_head">
             <div class="head_brand">
-                <img id ="web_logo" src="assets/talkthreads-logo.png" alt="TinyGuard logo">
+                <img id="web_logo" src="assets/talkthreads-logo.png" alt="TinyGuard logo" />
                 <h1>TinyGuard</h1>
             </div>
 
@@ -24,29 +26,88 @@
                 <a href="About.html">About</a>
             </nav>
         </header>
+
         <main>
             <div class="box-container">
-                
+
                 <section class="box-card">
-                <h2>Welcome!</h2>
+                    <h2>Welcome!</h2>
 
-                <div class="upload-container">
-                    <div class="upload-box" id="drop-area">
-                        <p>Insert file</p>
-                        <button id="uploadBtn">Upload file</button>
-                        <input type = "file" id="Inputfile" hidden/>
+                    <div class="upload-container">
 
-                        <p id="file-name"></p>
+                        <div class="upload-box" id="drop-area">
+
+                            <p>Insert file</p>
+
+                            <button id="uploadBtn" type="button">
+                                Upload file
+                            </button>
+
+                            <input
+                                type="file"
+                                id="Inputfile"
+                                accept=".txt"
+                                hidden
+                            />
+
+                            <p id="file-name"></p>
+
+                            <p id="scan-result"></p>
+
+                        </div>
+
                     </div>
-                </div>
+
                 </section>
+
             </div>
         </main>
 
-    </div>    
-      <script type="module" src="scripts/script.js"></script>
-        <script type="module" src="scripts/login_signup_script.js"></script>
+    </div>
 
+    <script type="module" src="scripts/login_signup_script.js"></script>
+
+    <script>
+        const uploadBtn = document.getElementById("uploadBtn");
+        const inputFile = document.getElementById("Inputfile");
+        const fileName = document.getElementById("file-name");
+        const scanResult = document.getElementById("scan-result");
+
+        uploadBtn.addEventListener("click", () => {
+            inputFile.click();
+        });
+
+        inputFile.addEventListener("change", async () => {
+            const file = inputFile.files[0];
+
+            if (!file) return;
+
+            fileName.textContent = `Selected file: ${file.name}`;
+            scanResult.textContent = "Scanning...";
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("http://localhost:4000/scan", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    scanResult.textContent = `Error: ${data.error}`;
+                    return;
+                }
+
+                scanResult.textContent = `Result: ${data.result}`;
+            } catch (error) {
+                console.error(error);
+                scanResult.textContent = "Could not connect to backend.";
+            }
+        });
+    </script>
 
 </body>
 </html>
