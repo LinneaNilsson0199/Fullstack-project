@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const multer = require("multer");
 require("dotenv").config();
+
+const AhoCorasick = require("./search");
 
 console.log("THIS server.js is running");
 
@@ -10,6 +14,16 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
+const upload = multer({ storage: multer.memoryStorage() });
+
+const words = fs
+  .readFileSync("words.txt", "utf8")
+  .split(/\r?\n/)
+  .map(word => word.trim().toLowerCase())
+  .filter(word => word.length > 0);
+
+const automaton = new AhoCorasick(words);
+
 // Load route modules
 require("./login")(app, pool);
 require("./register")(app, pool);
@@ -18,6 +32,33 @@ require("./register")(app, pool);
 app.get("/", (req, res) => {
   res.send("API is running");
 });
+
+// FILE SCAN
+app.post("/scan", upload.single("file"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        error: "No file uploaded",
+      });
+    }
+
+    const text = req.file.buffer.toString("utf8").toLowerCase();
+    const found = automaton.search(text);
+
+    res.json({
+      result: found ? "not clear" : "clear",
+      found,
+    });
+  } catch (error) {
+    console.error("Error scanning file:", error);
+    res.status(500).json({
+      error: "Failed to scan file",
+      details: error.message,
+    });
+  }
+});
+
+console.log("SCAN ROUTE LOADED");
 
 // USERS
 app.get("/users", async (req, res) => {
@@ -98,17 +139,14 @@ app.post("/parent-child", async (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 
-process.on("exit", (code) => {
-  console.log("Node process exiting with code:", code);
-});
-
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", err => {
   console.error("Uncaught exception:", err);
 });
 
-process.on("unhandledRejection", (reason) => {
+process.on("unhandledRejection", reason => {
   console.error("Unhandled rejection:", reason);
 });
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
