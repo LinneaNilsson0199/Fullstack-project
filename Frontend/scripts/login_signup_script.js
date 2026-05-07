@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:4000";
+const API_BASE_URL = "https://tinyguard-backend.onrender.com";
 const user = JSON.parse(localStorage.getItem("tinyguardUser"));
 const currentPage = window.location.pathname.split("/").pop();
 const loginForm = document.getElementById("loginForm");
