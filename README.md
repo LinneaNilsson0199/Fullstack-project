@@ -1,73 +1,77 @@
-# TinyGuard (Prototype)
+# TinyGuard
+TinyGuard is a fullstack web application for monitoring uploaded text files and supporting safer communication for families.
+This release includes the core functionality of the application, including user registration, login, file scanning, database relations, and cloud deployment.
 
-TinyGuard is a fullstack web application prototype for monitoring uploaded text files and supporting safer communication for families.
+---
 
-This version includes basic user registration, login, a database structure, and a simple file upload interface.
+## Live Demo
+
+Frontend:  
+https://tinyguard-frontend.onrender.com
+
+Backend:  
+https://tinyguard-backend.onrender.com
 
 ---
 
 ## Status
+This is the **Initial Release (v1.0.0)**.
 
-This is an early prototype (**v0.1.0**).  
-Some features are incomplete, including authentication and file processing.
+Core functionality is implemented and working.  
+Some planned features, such as statistics and role-specific interfaces, are still under development.
 
 ---
 
 ## Features
-
 - Create user accounts
 - Login with email and password
+- Upload and scan text files
+- Detect flagged words in uploaded files
 - PostgreSQL database with roles and relations
 - Parent-child user connections
-- Basic file upload interface (not fully implemented yet)
+- Cloud deployment with Render
 
 ---
 
 ## Tech stack
-
 - Frontend: HTML, CSS, JavaScript  
 - Backend: Node.js, Express  
 - Database: PostgreSQL  
+- Cloud Hosting: Render
+
+---
+
+## Deployment
+TinyGuard is deployed using Render services:
+
+- Frontend hosted as a Render Static Site
+- Backend hosted as a Render Web Service
+- PostgreSQL hosted using Render PostgreSQL
+
+The backend connects to the database using environment variables and a PostgreSQL connection string.
 
 ---
 
 ## Setup
-
-### 1. Clone the repository
+1. Clone the repository
 ```bash
-git clone <repo-url>
+git clone https://github.com/LinneaNilsson0199/Fullstack-project.git
 cd Fullstack-project
-2. Set up the database
 
-Run the SQL file:
-
-database/schema.sql
-
-This will:
-
-create tables
-add constraints
-insert test data
-3. Configure environment variables
-
-Create a .env file in the backend folder:
-
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-PORT=4000
-4. Install dependencies
+2. Install backend dependencies
 cd backend
 npm install
-5. Start the server
-node server.js
 
-Server runs on:
+3. Configure Render environment variables
+Create a `.env` file inside the `backend` folder.
 
-http://localhost:4000
+Add the following:
+DATABASE_URL=your_render_postgresql_url
+
+---
+
 Notes
-File upload is not fully connected to the backend yet
-Authentication (sessions/tokens) will be added later
-This release is intended for testing and development only
+The deployed version is hosted on Render
+File scanning currently supports .txt files
+Authentication can be improved further with sessions or JWT tokens
+Statistics and role-based interfaces are planned for future updates
