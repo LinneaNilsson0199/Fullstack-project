@@ -56,6 +56,7 @@ HEADER
 #web_logo {
   width: 42px;
   height: 42px;
+  transform: scale(2.5);
   object-fit: contain;
 }
 
