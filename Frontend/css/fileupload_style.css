@@ -1,34 +1,41 @@
-/* =========================
-    UPLOAD FILE SECTION
-   ========================= */
-.upload-container {
+.upload-box {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin: 20px;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
 }
 
-.upload-box {
-  border: 2px dashed #333;
-  padding: 40px;
-  width: 300px;
-  text-align: center;
-  background: rgb(248, 246, 242);
-  border-radius: 10px;
+.upload-icon {
+  font-size: 4rem;
+  color: #173f2a;
 }
 
 .upload-box p {
-  margin-bottom: 10px;
+  margin: 0;
+  color: #173f2a;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .upload-box button {
-  padding: 10px 20px;
-  background: rgb(123, 156, 111);
+  padding: 0.9rem 1.35rem;
+  background: #638c61;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .upload-box button:hover {
-  background-color: darkgreen;
+  background: #173f2a;
+}
+
+#file-name {
+  color: #536357;
+  font-size: 0.9rem;
+  word-break: break-word;
 }

@@ -1,50 +1,53 @@
-
-
-/* =========================
-   LOGIN
-   ========================= */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  padding: 5px;
+.hidden{
+    display:none !important;
 }
 
-form{
-    border-radius: 15px;
-    background: rgb(185, 195, 168);
-}
-.formlayout{
-
-  margin: 20px auto;
-  padding: 50px;
-}
-.login-subtext{
-    text-align: center;
-    margin: 0px;
+.auth-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
 }
 
-.loginBtn{
-  display: block;
-  margin: 20px auto;
-  background: #cfd6d0;
-  padding: 0.5rem 1rem;
-  border: 2px solid #605b5b;
-  border-radius: 10px;
+.auth-form input{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
 }
 
-.loginBtn:hover{
-    text-decoration: underline; 
+.auth-btn-group{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    margin-top:20px;
 }
 
-/* =========================
-   SIGN UP
-   ========================= */
-
-#loginlocate{
-    font-weight: 700;
+.green-btn{
+    background:#6d9467;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:600;
 }
 
-#loginlocate:hover{
-    text-decoration: underline;
+.white-btn{
+    background:white;
+    border:1px solid #6d9467;
+    padding:14px 28px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.switch-text span{
+    color:#2d5a35;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.auth-icon{
+    font-size:80px;
+    margin-bottom:20px;
+    color:#184b2d;
 }
