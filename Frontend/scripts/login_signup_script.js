@@ -5,6 +5,45 @@ const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
 
+const authButtons = document.getElementById("authButtons");
+const showLoginBtn = document.getElementById("showLoginBtn");
+const showSignupBtn = document.getElementById("showSignupBtn");
+const switchToSignup = document.getElementById("switchToSignup");
+const switchToLogin = document.getElementById("switchToLogin");
+const loggedInUploadBox = document.getElementById("loggedInUploadBox");
+
+function showLoginForm() {
+  if (!authButtons || !loginForm || !signupForm) return;
+
+  authButtons.classList.add("hidden");
+  signupForm.classList.add("hidden");
+  loginForm.classList.remove("hidden");
+}
+
+function showSignupForm() {
+  if (!authButtons || !loginForm || !signupForm) return;
+
+  authButtons.classList.add("hidden");
+  loginForm.classList.add("hidden");
+  signupForm.classList.remove("hidden");
+}
+
+if (showLoginBtn) {
+  showLoginBtn.addEventListener("click", showLoginForm);
+}
+
+if (showSignupBtn) {
+  showSignupBtn.addEventListener("click", showSignupForm);
+}
+
+if (switchToSignup) {
+  switchToSignup.addEventListener("click", showSignupForm);
+}
+
+if (switchToLogin) {
+  switchToLogin.addEventListener("click", showLoginForm);
+}
+
 console.log("login_signup_script.js loaded");
 console.log("loginForm:", loginForm);
 console.log("signupForm:", signupForm);
@@ -12,7 +51,7 @@ console.log("signupForm:", signupForm);
 // PROTECT FILEINPUT PAGE
 if (currentPage === "fileinput.html" && !user) {
   alert("You must be logged in to access this page.");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 const fileInputLinks = document.querySelectorAll('a[href="fileinput.html"]');
@@ -31,7 +70,23 @@ if (user) {
   if (loginLink) loginLink.style.display = "none";
   if (signupLink) signupLink.style.display = "none";
 }
+if (user) {
 
+  if (authButtons) authButtons.classList.add("hidden");
+  if (loginForm) loginForm.classList.add("hidden");
+  if (signupForm) signupForm.classList.add("hidden");
+
+  if (loggedInUploadBox) {
+    loggedInUploadBox.classList.remove("hidden");
+  }
+
+} else {
+
+  if (loggedInUploadBox) {
+    loggedInUploadBox.classList.add("hidden");
+  }
+
+}
 // LOGIN
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -64,7 +119,7 @@ if (loginForm) {
       }
 
       localStorage.setItem("tinyguardUser", JSON.stringify(data.user));
-      window.location.href = "fileinput.html";
+      window.location.href = "index.html";
     } catch (error) {
       console.error("Login request failed:", error);
       alert("Could not connect to server.");
@@ -127,7 +182,7 @@ if (signupForm) {
 
       localStorage.setItem("tinyguardUser", JSON.stringify(data.user));
       alert("Account created successfully!");
-      window.location.href = "fileinput.html";
+      window.location.href = "index.html";
     } catch (error) {
       console.error("Signup request failed:", error);
       alert("Could not connect to server.");
@@ -151,6 +206,23 @@ if (logoutBtn) {
 
     localStorage.removeItem("tinyguardUser");
     alert("You have been logged out");
-    window.location.href = "login.html"
+    window.location.href = "index.html"
   })
+}
+
+const navLoginBtn = document.getElementById("navLoginBtn");
+const navSignupBtn = document.getElementById("navSignupBtn");
+
+if (navLoginBtn) {
+  navLoginBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showLoginForm();
+  });
+}
+
+if (navSignupBtn) {
+  navSignupBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showSignupForm();
+  });
 }

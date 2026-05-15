@@ -1,37 +1,66 @@
-const Inputfile  = document.getElementById('Inputfile'); 
-const uploadBtn  = document.getElementById('uploadBtn');
+const inputFile = document.getElementById("Inputfile");
+const uploadBtn = document.getElementById("uploadBtn");
 const fileName = document.getElementById("file-name");
-const dropArea = document.getElementById("drop-area")
+const dropArea = document.getElementById("loggedInUploadBox");
+const scanResult = document.getElementById("scan-result");
 
-if (Inputfile && uploadBtn && fileName && dropArea) {
-uploadBtn.addEventListener("click", () => {
-    Inputfile.click();
-})
+async function scanFile(file) {
+  if (!file) return;
 
-Inputfile.addEventListener("change", function () {
-    if (Inputfile.files.length > 0){
-        fileName.textContent = "Selected file: " + Inputfile.files[0].name;
+  fileName.textContent = "Selected file: " + file.name;
+  scanResult.textContent = "Scanning...";
 
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await fetch("https://tinyguard-backend.onrender.com/scan", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      scanResult.textContent = data.error || "Scan failed";
+      return;
     }
-})
 
+    if (data.found) {
+      scanResult.textContent = "Inappropriate words found.";
+    } else {
+      scanResult.textContent = "No inappropriate words found.";
+    }
 
-//Drop file
+  } catch (error) {
+    console.error(error);
+    scanResult.textContent = "Could not connect to backend.";
+  }
+}
 
-dropArea.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropArea.style.background = "#ddd";
+if (inputFile && uploadBtn && fileName && dropArea && scanResult) {
+  uploadBtn.addEventListener("click", () => {
+    inputFile.click();
+  });
+
+  inputFile.addEventListener("change", () => {
+    scanFile(inputFile.files[0]);    
 });
 
-dropArea.addEventListener("dragleave", () => {
-    dropArea.style.background = "#f5f5f5";
-});
-
-dropArea.addEventListener("drop", (e) => {
+  dropArea.addEventListener("dragover", (e) => {
     e.preventDefault();
+    dropArea.style.background = "#eef4eb";
+  });
+
+  dropArea.addEventListener("dragleave", () => {
+    dropArea.style.background = "rgba(255,255,255,0.52)";
+  });
+
+  dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.style.background = "rgba(255,255,255,0.52)";
 
     const file = e.dataTransfer.files[0];
-    fileName.textContent = "Selected file: " + file.name;
+    scanFile(file);
 });
-
 }
