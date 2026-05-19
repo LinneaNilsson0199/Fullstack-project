@@ -1,8 +1,11 @@
+import { renderBadWordsChart } from "./statistics_chart.js";
+
 const API_BASE_URL = "https://tinyguard-backend.onrender.com";
 const user = JSON.parse(localStorage.getItem("tinyguardUser"));
 
 const adminDashboard = document.getElementById("adminDashboard");
 const parentDashboard = document.getElementById("parentDashboard");
+
 
 if (user.role_id === 1) {
   adminDashboard.classList.remove("hidden");
@@ -127,9 +130,57 @@ async function loadChildStatistics(childId, period) {
     }
 
     childStatistics.innerHTML = `
-      <p>Total scans: ${data.total_scans}</p>
-      <p>Bad words found: ${data.total_bad_words}</p>
+      <div class="stat-card">
+        <i class="fa-solid fa-expand"></i>
+        <div>
+          <p>Total scans</p>
+          <strong>${data.total_scans}</strong>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div>
+          <p>Bad words found</p>
+          <strong>${data.total_bad_words}</strong>
+        </div>
+      </div>
     `;
+//temporary data for testing chart
+  let demoChartData = [];
+
+  if (period === "week") {
+    demoChartData = [
+      { date_group: "2026-05-18", bad_words: 8 },
+      { date_group: "2026-05-19", bad_words: 3 },
+      { date_group: "2026-05-20", bad_words: 2 },
+      { date_group: "2026-05-21", bad_words: 5 },
+      { date_group: "2026-05-22", bad_words: 1 },
+      { date_group: "2026-05-23", bad_words: 8 },
+      { date_group: "2026-05-24", bad_words: 5 }
+    ];
+  } else if (period === "year") {
+    demoChartData = [
+      { date_group: "2026-01-05", bad_words: 4 },
+      { date_group: "2026-02-10", bad_words: 7 },
+      { date_group: "2026-03-15", bad_words: 3 },
+      { date_group: "2026-04-20", bad_words: 9 },
+      { date_group: "2026-05-18", bad_words: 6 }
+    ];
+  } else if (period === "all") {
+    demoChartData = [
+      { date_group: "2025-09-08", bad_words: 5 },
+      { date_group: "2025-11-18", bad_words: 8 },
+      { date_group: "2026-01-05", bad_words: 4 },
+      { date_group: "2026-03-15", bad_words: 3 },
+      { date_group: "2026-05-18", bad_words: 6 }
+    ];
+  }
+
+  renderBadWordsChart(demoChartData, period);
+
+  // Real backend data
+  //renderBadWordsChart(data.chart_data, period);
   } catch (error) {
     console.error(error);
     childStatistics.textContent = "Could not connect to server.";
