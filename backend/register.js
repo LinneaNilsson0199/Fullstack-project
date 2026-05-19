@@ -1,14 +1,10 @@
 const bcrypt = require("bcrypt");
 
-console.log("register.js loaded");
 
 module.exports = (app, pool) => {
-  console.log("Register route mounted");
-
+  
   app.post("/register", async (req, res) => {
-    console.log("REGISTER HIT");
-    console.log("Request body:", req.body);
-
+ 
     try {
       const { full_name, email, password, role } = req.body;
 
