@@ -5,7 +5,7 @@ const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
 const profileLink = document.querySelector('a[href="profile.html"]');
-const isParent = user && user.role_id === 2;
+const canAccessProfile = user && (user.role_id === 1 || user.role_id === 2);
 
 const authButtons = document.getElementById("authButtons");
 const showLoginBtn = document.getElementById("showLoginBtn");
@@ -53,6 +53,14 @@ console.log("signupForm:", signupForm);
 // PROTECT FILEINPUT PAGE
 if (currentPage === "fileinput.html" && !user) {
   alert("You must be logged in to access this page.");
+  window.location.href = "index.html";
+}
+// PROTECT PROFILE PAGE
+if (
+  currentPage === "profile.html" &&
+  (!user || (user.role_id !== 1 && user.role_id !== 2))
+) {
+  alert("Only admins and parents can access this page.");
   window.location.href = "index.html";
 }
 
@@ -201,7 +209,7 @@ if (user) {
   if (logoutBtn) logoutBtn.style.display = "inline-block";
 
   if (profileLink) {
-    profileLink.style.display = isParent ? "inline-block" : "none";
+    profileLink.style.display = canAccessProfile ? "inline-block" : "none";
   }
 
 } else {

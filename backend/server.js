@@ -13,6 +13,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+function requireAdmin(req, res, next) {
+  if (req.user.role_id !== 1) {
+    return res.status(403).json({ error: "Admin access required" });
+  }
+
+  next();
+}
+
 const upload = multer({ storage: multer.memoryStorage() });
 
 const words = fs
@@ -55,7 +63,7 @@ app.post("/scan", authenticate, upload.single("file"), (req, res) => {
 });
 
 // USERS
-app.get("/users", authenticate, async (req, res) => {
+app.get("/users", authenticate, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT id, full_name, email, role_id, created_at
@@ -70,6 +78,36 @@ app.get("/users", authenticate, async (req, res) => {
       error: "Failed to fetch users",
       details: error.message,
     });
+  }
+});
+
+app.put("/users/:id", authenticate, requireAdmin, async (req, res) => {
+  try {
+    const { full_name, email, role_id } = req.body;
+
+    const result = await pool.query(
+      `
+      UPDATE users
+      SET full_name = $1, email = $2, role_id = $3
+      WHERE id = $4
+      RETURNING id, full_name, email, role_id, created_at;
+      `,
+      [full_name, email, role_id, req.params.id]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user" });
+  }
+});
+
+app.delete("/users/:id", authenticate, requireAdmin, async (req, res) => {
+  try {
+    await pool.query("DELETE FROM users WHERE id = $1", [req.params.id]);
+
+    res.json({ message: "User deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete user" });
   }
 });
 
