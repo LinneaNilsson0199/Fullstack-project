@@ -5,11 +5,10 @@ const multer = require("multer");
 require("dotenv").config();
 
 const AhoCorasick = require("./search");
-
-console.log("THIS server.js is running");
+const pool = require("./db");
+const { authenticate } = require("./authenticate");
 
 const app = express();
-const pool = require("./db");
 
 app.use(cors());
 app.use(express.json());
@@ -24,17 +23,14 @@ const words = fs
 
 const automaton = new AhoCorasick(words);
 
-// Load route modules
+// Public routes
 require("./login")(app, pool);
 require("./register")(app, pool);
 
-// Simple test route
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
+// Protected routes
 
 // FILE SCAN
-app.post("/scan", upload.single("file"), (req, res) => {
+app.post("/scan", authenticate, upload.single("file"), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -58,16 +54,15 @@ app.post("/scan", upload.single("file"), (req, res) => {
   }
 });
 
-console.log("SCAN ROUTE LOADED");
-
 // USERS
-app.get("/users", async (req, res) => {
+app.get("/users", authenticate, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT id, full_name, email, role_id, created_at
       FROM users
       ORDER BY id;
     `);
+
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -79,13 +74,14 @@ app.get("/users", async (req, res) => {
 });
 
 // ROLES
-app.get("/roles", async (req, res) => {
+app.get("/roles", authenticate, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT *
       FROM roles
       ORDER BY id;
     `);
+
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching roles:", error);
@@ -97,13 +93,14 @@ app.get("/roles", async (req, res) => {
 });
 
 // PARENT_CHILD
-app.get("/parent-child", async (req, res) => {
+app.get("/parent-child", authenticate, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT *
       FROM parent_child
       ORDER BY id;
     `);
+
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching parent_child:", error);
@@ -114,7 +111,7 @@ app.get("/parent-child", async (req, res) => {
   }
 });
 
-app.post("/parent-child", async (req, res) => {
+app.post("/parent-child", authenticate, async (req, res) => {
   try {
     const { parent_id, child_id } = req.body;
 
