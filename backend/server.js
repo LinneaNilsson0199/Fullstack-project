@@ -167,7 +167,7 @@ app.post("/parent-child/add-email", authenticate, async (req, res) => {
     const existingRelation = await pool.query(
       `
       SELECT id FROM parent_child
-      WHERE parent_id = $1 AND child_id = $2
+      WHERE parent_user_id = $1 AND child_user_id = $2
       `,
       [parentId, child.id]
     );
@@ -178,7 +178,7 @@ app.post("/parent-child/add-email", authenticate, async (req, res) => {
 
     const result = await pool.query(
       `
-      INSERT INTO parent_child (parent_id, child_id)
+      INSERT INTO parent_child (parent_user_id, child_user_id)
       VALUES ($1, $2)
       RETURNING *;
       `,
@@ -205,8 +205,8 @@ app.get("/my-children", authenticate, async (req, res) => {
       `
       SELECT users.id, users.full_name, users.email
       FROM parent_child
-      JOIN users ON parent_child.child_id = users.id
-      WHERE parent_child.parent_id = $1
+      JOIN users ON parent_child.child_user_id = users.id
+      WHERE parent_child.parent_user_id = $1
       `,
       [parentId]
     );
