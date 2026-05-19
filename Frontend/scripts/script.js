@@ -14,8 +14,13 @@ async function scanFile(file) {
   formData.append("file", file);
 
   try {
+    const token = localStorage.getItem("tinyguardToken");
+
     const response = await fetch("https://tinyguard-backend.onrender.com/scan", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       body: formData
     });
 
@@ -65,5 +70,3 @@ if (inputFile && uploadBtn && fileName && dropArea && scanResult) {
 });
 }
 
-
-//CONNECT CHILD TO PARENT

@@ -5,6 +5,7 @@ const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
 const profileLink = document.querySelector('a[href="profile.html"]');
+const isParent = user && user.role_id === 2;
 
 const authButtons = document.getElementById("authButtons");
 const showLoginBtn = document.getElementById("showLoginBtn");
@@ -198,6 +199,11 @@ if (user) {
   if (loginLink) loginLink.style.display = "none";
   if (signupLink) signupLink.style.display = "none";
   if (logoutBtn) logoutBtn.style.display = "inline-block";
+
+  if (profileLink) {
+    profileLink.style.display = isParent ? "inline-block" : "none";
+  }
+
 } else {
   if (logoutBtn) logoutBtn.style.display = "none";
 
