@@ -62,6 +62,7 @@ class AhoCorasick {
 
   search(text) {
     let node = this.root;
+    let matchCount = 0;
 
     for (let i = 0; i < text.length; i++) {
       const char = text[i];
@@ -80,13 +81,16 @@ class AhoCorasick {
           const end = i;
 
           if (isWholeWord(text, start, end)) {
-            return true;
+            matchCount++;
           }
         }
       }
     }
 
-    return false;
+    return {
+      found: matchCount > 0,
+      match_count: matchCount
+    };
   }
 }
 

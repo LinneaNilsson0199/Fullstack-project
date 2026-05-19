@@ -54,24 +54,26 @@ if (connectChildBtn) {
 }
 
 const childrenList = document.getElementById("childrenList");
+const childStatistics = document.getElementById("childStatistics");
+const filterButtons = document.querySelectorAll("#statisticsFilters button");
+
+let selectedChildId = null;
 
 async function loadChildren() {
   const token = localStorage.getItem("tinyguardToken");
 
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/my-children`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const response = await fetch(`${API_BASE_URL}/my-children`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const data = await response.json();
+
     if (!response.ok) {
-        childrenList.textContent = data.error || "Could not load children.";
-        return;
+      childrenList.textContent = data.error || "Could not load children.";
+      return;
     }
 
     childrenList.innerHTML = "";
@@ -91,6 +93,11 @@ async function loadChildren() {
         </p>
       `;
 
+      childElement.addEventListener("click", () => {
+        selectedChildId = child.id;
+        loadChildStatistics(child.id, "week");
+      });
+
       childrenList.appendChild(childElement);
     });
 
@@ -99,7 +106,50 @@ async function loadChildren() {
   }
 }
 
+async function loadChildStatistics(childId, period) {
+  const token = localStorage.getItem("tinyguardToken");
+
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/statistics/child/${childId}?period=${period}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      childStatistics.textContent = data.error || "Could not load statistics.";
+      return;
+    }
+
+    childStatistics.innerHTML = `
+      <p>Total scans: ${data.total_scans}</p>
+      <p>Bad words found: ${data.total_bad_words}</p>
+    `;
+  } catch (error) {
+    console.error(error);
+    childStatistics.textContent = "Could not connect to server.";
+  }
+}
+
+filterButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (!selectedChildId) {
+      childStatistics.textContent = "Please select a child first.";
+      return;
+    }
+
+    const period = button.dataset.period;
+    loadChildStatistics(selectedChildId, period);
+  });
+});
+
 loadChildren();
+
 const usersTableBody = document.getElementById("usersTableBody");
 const userIdInput = document.getElementById("userId");
 const fullNameInput = document.getElementById("fullName");
@@ -125,49 +175,49 @@ async function loadUsers() {
     usersTableBody.innerHTML = "";
 
     users.forEach(user => {
-  const row = document.createElement("tr");
+      const row = document.createElement("tr");
 
-  row.innerHTML = `
-    <td>${user.id}</td>
-    <td>${user.full_name}</td>
-    <td>${user.email}</td>
-    <td>${user.role_id}</td>
-    <td>
-      <button class="editUserBtn">Edit</button>
-      <button class="deleteUserBtn">Delete</button>
-    </td>
-  `;
+      row.innerHTML = `
+        <td>${user.id}</td>
+        <td>${user.full_name}</td>
+        <td>${user.email}</td>
+        <td>${user.role_id}</td>
+        <td>
+          <button class="editUserBtn">Edit</button>
+          <button class="deleteUserBtn">Delete</button>
+        </td>
+      `;
 
-  row.querySelector(".editUserBtn").addEventListener("click", () => {
-    userIdInput.value = user.id;
-    fullNameInput.value = user.full_name;
-    adminEmailInput.value = user.email;
-    roleIdInput.value = user.role_id;
-  });
+      row.querySelector(".editUserBtn").addEventListener("click", () => {
+        userIdInput.value = user.id;
+        fullNameInput.value = user.full_name;
+        adminEmailInput.value = user.email;
+        roleIdInput.value = user.role_id;
+      });
 
-  row.querySelector(".deleteUserBtn").addEventListener("click", async () => {
-    const confirmDelete = confirm("Are you sure you want to delete this user?");
-    if (!confirmDelete) return;
+      row.querySelector(".deleteUserBtn").addEventListener("click", async () => {
+        const confirmDelete = confirm("Are you sure you want to delete this user?");
+        if (!confirmDelete) return;
 
-    const token = localStorage.getItem("tinyguardToken");
+        const token = localStorage.getItem("tinyguardToken");
 
-    const response = await fetch(`${API_BASE_URL}/users/${user.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+        const response = await fetch(`${API_BASE_URL}/users/${user.id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          alert("Failed to delete user.");
+          return;
+        }
+
+        loadUsers();
+      });
+
+      usersTableBody.appendChild(row);
     });
-
-    if (!response.ok) {
-      alert("Failed to delete user.");
-      return;
-    }
-
-    loadUsers();
-  });
-
-  usersTableBody.appendChild(row);
-});
 
   } catch (error) {
     console.error(error);
