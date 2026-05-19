@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { createToken } = require("./authenticate");
 
 module.exports = (app, pool) => {
   app.post("/login", async (req, res) => {
@@ -32,8 +33,11 @@ module.exports = (app, pool) => {
         });
       }
 
+      const token = createToken(user);
+
       res.json({
         message: "Login successful",
+        token,
         user: {
           id: user.id,
           full_name: user.full_name,
