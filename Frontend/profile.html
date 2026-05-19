@@ -71,7 +71,6 @@
             <div id="childrenList"></div>
             <h3>Child statistics</h3>
             <div id="statisticsFilters">
-                <button data-period="day">Last day</button>
                 <button data-period="week">Last week</button>
                 <button data-period="year">Last year</button>
                 <button data-period="all">All time</button>
@@ -80,10 +79,14 @@
             <div id="childStatistics">
                 <p>Select a child to view statistics.</p>
             </div>
+            <div class="chart-card">
+                 <canvas id="badWordsChart"></canvas>
+                </div>
             </section>
          </main>  
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="scripts/login_signup_script.js"></script>
 <script type="module" src="scripts/parent_child_connect.js"></script>
 </body>

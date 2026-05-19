@@ -259,14 +259,12 @@ app.get("/statistics/child/:childId", authenticate, async (req, res) => {
 
     let dateFilter = "";
 
-    if (period === "day") {
-      dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '1 day'";
-    } else if (period === "week") {
+    if (period === "week") {
       dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '7 days'";
     } else if (period === "year") {
       dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '1 year'";
     }
-
+    
     const result = await pool.query(
       `
       SELECT
@@ -285,7 +283,30 @@ app.get("/statistics/child/:childId", authenticate, async (req, res) => {
       [parentId, childId]
     );
 
-    res.json(result.rows[0]);
+    let groupBy = "day";
+
+    if (period === "year" || period === "all") {
+      groupBy = "week";
+    }
+
+    const chartResult = await pool.query(
+      `
+      SELECT
+        DATE_TRUNC('${groupBy}', scan_results.scanned_at) AS date_group,
+        COALESCE(SUM(scan_results.match_count), 0) AS bad_words
+      FROM scan_results
+      JOIN parent_child
+        ON scan_results.child_user_id = parent_child.child_user_id
+      WHERE parent_child.parent_user_id = $1
+        AND scan_results.child_user_id = $2
+        ${dateFilter}
+      GROUP BY date_group
+      ORDER BY date_group;
+      `,
+      [parentId, childId]
+    );
+    res.json({
+  ...result.rows[0], chart_data: chartResult.rows});
   } catch (error) {
     console.error(error);
 
