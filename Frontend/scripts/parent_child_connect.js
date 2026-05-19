@@ -147,40 +147,40 @@ async function loadChildStatistics(childId, period) {
       </div>
     `;
 //temporary data for testing chart
-  let demoChartData = [];
+  // let demoChartData = [];
 
-  if (period === "week") {
-    demoChartData = [
-      { date_group: "2026-05-18", bad_words: 8 },
-      { date_group: "2026-05-19", bad_words: 3 },
-      { date_group: "2026-05-20", bad_words: 2 },
-      { date_group: "2026-05-21", bad_words: 5 },
-      { date_group: "2026-05-22", bad_words: 1 },
-      { date_group: "2026-05-23", bad_words: 8 },
-      { date_group: "2026-05-24", bad_words: 5 }
-    ];
-  } else if (period === "year") {
-    demoChartData = [
-      { date_group: "2026-01-05", bad_words: 4 },
-      { date_group: "2026-02-10", bad_words: 7 },
-      { date_group: "2026-03-15", bad_words: 3 },
-      { date_group: "2026-04-20", bad_words: 9 },
-      { date_group: "2026-05-18", bad_words: 6 }
-    ];
-  } else if (period === "all") {
-    demoChartData = [
-      { date_group: "2025-09-08", bad_words: 5 },
-      { date_group: "2025-11-18", bad_words: 8 },
-      { date_group: "2026-01-05", bad_words: 4 },
-      { date_group: "2026-03-15", bad_words: 3 },
-      { date_group: "2026-05-18", bad_words: 6 }
-    ];
-  }
+  // if (period === "week") {
+  //   demoChartData = [
+  //     { date_group: "2026-05-18", bad_words: 8 },
+  //     { date_group: "2026-05-19", bad_words: 3 },
+  //     { date_group: "2026-05-20", bad_words: 2 },
+  //     { date_group: "2026-05-21", bad_words: 5 },
+  //     { date_group: "2026-05-22", bad_words: 1 },
+  //     { date_group: "2026-05-23", bad_words: 8 },
+  //     { date_group: "2026-05-24", bad_words: 5 }
+  //   ];
+  // } else if (period === "year") {
+  //   demoChartData = [
+  //     { date_group: "2026-01-05", bad_words: 4 },
+  //     { date_group: "2026-02-10", bad_words: 7 },
+  //     { date_group: "2026-03-15", bad_words: 3 },
+  //     { date_group: "2026-04-20", bad_words: 9 },
+  //     { date_group: "2026-05-18", bad_words: 6 }
+  //   ];
+  // } else if (period === "all") {
+  //   demoChartData = [
+  //     { date_group: "2025-09-08", bad_words: 5 },
+  //     { date_group: "2025-11-18", bad_words: 8 },
+  //     { date_group: "2026-01-05", bad_words: 4 },
+  //     { date_group: "2026-03-15", bad_words: 3 },
+  //     { date_group: "2026-05-18", bad_words: 6 }
+  //   ];
+  // }
 
-  renderBadWordsChart(demoChartData, period);
+  // renderBadWordsChart(demoChartData, period);
 
   // Real backend data
-  //renderBadWordsChart(data.chart_data, period);
+  renderBadWordsChart(data.chart_data, period);
   } catch (error) {
     console.error(error);
     childStatistics.textContent = "Could not connect to server.";
