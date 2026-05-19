@@ -32,6 +32,7 @@ if (connectChildBtn) {
 
       connectChildMessage.textContent = "Child connected successfully!";
       childEmailInput.value = "";
+      loadChildren();
     } catch (error) {
       console.error(error);
       connectChildMessage.textContent = "Could not connect to server.";
@@ -55,6 +56,10 @@ async function loadChildren() {
     );
 
     const data = await response.json();
+    if (!response.ok) {
+        childrenList.textContent = data.error || "Could not load children.";
+        return;
+    }
 
     childrenList.innerHTML = "";
 
