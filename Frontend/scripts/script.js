@@ -64,3 +64,6 @@ if (inputFile && uploadBtn && fileName && dropArea && scanResult) {
     scanFile(file);
 });
 }
+
+
+//CONNECT CHILD TO PARENT
