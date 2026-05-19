@@ -38,7 +38,7 @@ require("./register")(app, pool);
 // Protected routes
 
 // FILE SCAN
-app.post("/scan", authenticate, upload.single("file"), (req, res) => {
+app.post("/scan", authenticate, upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -47,11 +47,25 @@ app.post("/scan", authenticate, upload.single("file"), (req, res) => {
     }
 
     const text = req.file.buffer.toString("utf8").toLowerCase();
-    const found = automaton.search(text);
+    const scanResult = automaton.search(text);
+
+    await pool.query(
+      `
+      INSERT INTO scan_results (child_user_id, file_name, detected_text, match_count)
+      VALUES ($1, $2, $3, $4);
+      `,
+      [
+        req.user.id,
+        req.file.originalname,
+        null,
+        scanResult.match_count
+      ]
+    );
 
     res.json({
-      result: found ? "not clear" : "clear",
-      found,
+      result: scanResult.found ? "not clear" : "clear",
+      found: scanResult.found,
+      match_count: scanResult.match_count
     });
   } catch (error) {
     console.error("Error scanning file:", error);

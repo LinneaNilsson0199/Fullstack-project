@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TinyGuard || Profile</title>
     <link rel="stylesheet" href="css/layout_style.css">
-    <link rel="stylesheet" href="css/login_signup_style.css">
     <script src="https://kit.fontawesome.com/dc4562ddf8.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -22,54 +21,26 @@
             </nav>
         </header>
         <main>
-            <section id="adminDashboard" class="hidden">
-            <h2>Admin Dashboard</h2>
-
-            <h3>Add or Update User</h3>
-
-            <input type="hidden" id="userId">
-
-            <input type="text" id="fullName" placeholder="Full name">
-            <input type="email" id="adminEmail" placeholder="Email">
-            <input type="password" id="adminPassword" placeholder="Password">
-
-            <select id="roleId">
-                <option value="1">Admin</option>
-                <option value="2">Parent</option>
-                <option value="3">Child</option>
-            </select>
-
-            <button id="saveUserBtn" type="button">Save User</button>
-            <button id="clearBtn" type="button">Clear</button>
-
-            <h3>Users</h3>
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Full name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody id="usersTableBody"></tbody>
-            </table>
-            </section>
-
-            <section id="parentDashboard" class="hidden">
-            <h2>Parent Dashboard</h2>
-
             <div id="connectChildBox">
-                <h3>Connect child account</h3>
-                <input type="email" id="childEmail" placeholder="Child email">
-                <button id="connectChildBtn">Connect child</button>
-                <p id="connectChildMessage"></p>
+            <h3>Connect child account</h3>
+            <input type="email" id="childEmail" placeholder="Child email">
+            <button id="connectChildBtn">Connect child</button>
+            <p id="connectChildMessage"></p>
+            </div>
+            <h3>Connected children</h3>
+                <div id="childrenList"></div>
+                
+            <h3>Child statistics</h3>
+            <div id="statisticsFilters">
+                <button data-period="day">Last day</button>
+                <button data-period="week">Last week</button>
+                <button data-period="year">Last year</button>
+                <button data-period="all">All time</button>
             </div>
 
-            <h3>Connected children</h3>
-            <div id="childrenList"></div>
-            </section>
+            <div id="childStatistics">
+            <p>Select a child to view statistics.</p>
+            </div> 
          </main>  
     </div>
 
