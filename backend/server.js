@@ -111,30 +111,6 @@ app.get("/parent-child", authenticate, async (req, res) => {
   }
 });
 
-app.post("/parent-child", authenticate, async (req, res) => {
-  try {
-    const { parent_id, child_id } = req.body;
-
-    const result = await pool.query(
-      `
-      INSERT INTO parent_child (parent_id, child_id)
-      VALUES ($1, $2)
-      RETURNING *;
-      `,
-      [parent_id, child_id]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error("Error creating parent_child row:", error);
-    res.status(500).json({
-      error: "Failed to create parent_child row",
-      details: error.message,
-    });
-  }
-});
-
-
 app.post("/parent-child/add-email", authenticate, async (req, res) => {
   try {
     const parentId = req.user.id;
@@ -218,6 +194,52 @@ app.get("/my-children", authenticate, async (req, res) => {
 
     res.status(500).json({
       error: "Failed to fetch children"
+    });
+  }
+});
+
+// CHILD STATISTICS
+app.get("/statistics/child/:childId", authenticate, async (req, res) => {
+  try {
+    const parentId = req.user.id;
+    const { childId } = req.params;
+    const { period } = req.query;
+
+    let dateFilter = "";
+
+    if (period === "day") {
+      dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '1 day'";
+    } else if (period === "week") {
+      dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '7 days'";
+    } else if (period === "year") {
+      dateFilter = "AND scan_results.scanned_at >= NOW() - INTERVAL '1 year'";
+    }
+
+    const result = await pool.query(
+      `
+      SELECT
+        COUNT(scan_results.id) AS total_scans,
+        COALESCE(SUM(scan_results.match_count), 0) AS total_bad_words,
+        COUNT(*) FILTER (WHERE scan_results.severity = 'low') AS low_count,
+        COUNT(*) FILTER (WHERE scan_results.severity = 'medium') AS medium_count,
+        COUNT(*) FILTER (WHERE scan_results.severity = 'high') AS high_count
+      FROM scan_results
+      JOIN parent_child
+        ON scan_results.child_user_id = parent_child.child_user_id
+      WHERE parent_child.parent_user_id = $1
+        AND scan_results.child_user_id = $2
+        ${dateFilter};
+      `,
+      [parentId, childId]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: "Failed to fetch statistics",
+      details: error.message,
     });
   }
 });
