@@ -134,6 +134,94 @@ app.post("/parent-child", authenticate, async (req, res) => {
   }
 });
 
+
+app.post("/parent-child/add-email", authenticate, async (req, res) => {
+  try {
+    const parentId = req.user.id;
+    const { childEmail } = req.body;
+
+    if (!childEmail) {
+      return res.status(400).json({ error: "Child email is required" });
+    }
+
+    const childResult = await pool.query(
+      `
+      SELECT users.id, users.email, roles.role_name
+      FROM users
+      JOIN roles ON users.role_id = roles.id
+      WHERE users.email = $1
+      `,
+      [childEmail]
+    );
+
+    if (childResult.rows.length === 0) {
+      return res.status(404).json({ error: "Child user not found" });
+    }
+
+    const child = childResult.rows[0];
+
+    if (child.role_name !== "child") {
+      return res.status(400).json({ error: "This user is not registered as a child" });
+    }
+
+    const existingRelation = await pool.query(
+      `
+      SELECT id FROM parent_child
+      WHERE parent_id = $1 AND child_id = $2
+      `,
+      [parentId, child.id]
+    );
+
+    if (existingRelation.rows.length > 0) {
+      return res.status(409).json({ error: "Child is already connected to this parent" });
+    }
+
+    const result = await pool.query(
+      `
+      INSERT INTO parent_child (parent_id, child_id)
+      VALUES ($1, $2)
+      RETURNING *;
+      `,
+      [parentId, child.id]
+    );
+
+    res.status(201).json({
+      message: "Child connected successfully",
+      relation: result.rows[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to connect child",
+      details: error.message,
+    });
+  }
+});
+
+app.get("/my-children", authenticate, async (req, res) => {
+  try {
+    const parentId = req.user.id;
+
+    const result = await pool.query(
+      `
+      SELECT users.id, users.full_name, users.email
+      FROM parent_child
+      JOIN users ON parent_child.child_id = users.id
+      WHERE parent_child.parent_id = $1
+      `,
+      [parentId]
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: "Failed to fetch children"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 4000;
 
 process.on("uncaughtException", err => {

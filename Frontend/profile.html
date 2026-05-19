@@ -17,13 +17,22 @@
             <nav class="head_nav">
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
-                <a href="#"><i class="fa-solid fa-circle-user"></i></a>
                 <button id="logoutBtn">Logout</button>
             </nav>
         </header>
         <main>
-
-        </main>
+            <div id="connectChildBox">
+            <h3>Connect child account</h3>
+            <input type="email" id="childEmail" placeholder="Child email">
+            <button id="connectChildBtn">Connect child</button>
+            <p id="connectChildMessage"></p>
+            </div>
+            <h3>Connected children</h3>
+                <div id="childrenList"></div>
+         </main>  
     </div>
+
+<script type="module" src="scripts/login_signup_script.js"></script>
+<script type="module" src="scripts/parent_child_connect.js"></script>
 </body>
 </html>

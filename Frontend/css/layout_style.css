@@ -184,11 +184,13 @@ MAIN CONTENT
 /*-------------------
 RESPONSIVE DESIGN
 -------------------*/
-@media (max-width: 900px) {
-  .front { grid-template-columns: 1fr; }
+@media (max-width: 1200px) {
+  .front { grid-template-columns: 1fr; padding: 20px; }
   .intro-card { grid-template-columns: 1fr; padding: 2rem; }
+  
   #family-img {
-    width: min(450px, 90%);
+    margin: auto;
+    width: min(600px, 90%);
     height: auto;
   }
 }
@@ -197,7 +199,7 @@ RESPONSIVE DESIGN
   .page { padding: 0; }
   .page_head { border-radius: 0; flex-direction: column; }
   .head_nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
-  .front { border-radius: 0; }
+  .front { border-radius: 0; padding: 20px;}
   .frontpage-content { padding: 1.25rem; }
   .intro-card { padding: 1.5rem; gap: 2rem; }
   #family-img {

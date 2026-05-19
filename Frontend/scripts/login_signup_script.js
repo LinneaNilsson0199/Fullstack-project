@@ -4,6 +4,7 @@ const currentPage = window.location.pathname.split("/").pop();
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
+const profileLink = document.querySelector('a[href="profile.html"]');
 
 const authButtons = document.getElementById("authButtons");
 const showLoginBtn = document.getElementById("showLoginBtn");
@@ -119,6 +120,7 @@ if (loginForm) {
       }
 
       localStorage.setItem("tinyguardUser", JSON.stringify(data.user));
+      localStorage.setItem("tinyguardToken", data.token);
       window.location.href = "index.html";
     } catch (error) {
       console.error("Login request failed:", error);
@@ -198,6 +200,10 @@ if (user) {
   if (logoutBtn) logoutBtn.style.display = "inline-block";
 } else {
   if (logoutBtn) logoutBtn.style.display = "none";
+
+  if (profileLink) {
+    profileLink.style.display = "none";
+  }
 }
 
 if (logoutBtn) {
@@ -205,6 +211,7 @@ if (logoutBtn) {
     e.preventDefault();
 
     localStorage.removeItem("tinyguardUser");
+    localStorage.removeItem("tinyguardToken");
     alert("You have been logged out");
     window.location.href = "index.html"
   })
