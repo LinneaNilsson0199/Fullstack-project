@@ -192,6 +192,7 @@ if (signupForm) {
       }
 
       localStorage.setItem("tinyguardUser", JSON.stringify(data.user));
+      localStorage.setItem("tinyguardToken", data.token);
       alert("Account created successfully!");
       window.location.href = "index.html";
     } catch (error) {
