@@ -41,7 +41,7 @@
 
             <button id="saveUserBtn" type="button">Save User</button>
             <button id="clearBtn" type="button">Clear</button>
-
+            <input type="text" id="userSearchInput" placeholder="Search users by name or email">
             <h3>Users</h3>
             <table>
                 <thead>
@@ -69,24 +69,10 @@
 
             <h3>Connected children</h3>
             <div id="childrenList"></div>
-            <h3>Child statistics</h3>
-            <div id="statisticsFilters">
-                <button data-period="week">Last week</button>
-                <button data-period="year">Last year</button>
-                <button data-period="all">All time</button>
-            </div>
-
-            <div id="childStatistics">
-                <p>Select a child to view statistics.</p>
-            </div>
-            <div class="chart-card">
-                 <canvas id="badWordsChart"></canvas>
-                </div>
             </section>
          </main>  
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="scripts/login_signup_script.js"></script>
 <script type="module" src="scripts/parent_child_connect.js"></script>
 </body>

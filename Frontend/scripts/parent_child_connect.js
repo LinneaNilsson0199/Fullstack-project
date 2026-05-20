@@ -5,6 +5,8 @@ const user = JSON.parse(localStorage.getItem("tinyguardUser"));
 
 const adminDashboard = document.getElementById("adminDashboard");
 const parentDashboard = document.getElementById("parentDashboard");
+const userSearchInput = document.getElementById("userSearchInput");
+let allUsers = [];
 
 
 if (user.role_id === 1) {
@@ -222,78 +224,64 @@ async function loadUsers() {
     });
 
     const users = await response.json();
-
-    usersTableBody.innerHTML = "";
-
-    users.forEach(user => {
-      const row = document.createElement("tr");
-
-      row.innerHTML = `
-        <td>${user.id}</td>
-        <td>${user.full_name}</td>
-        <td>${user.email}</td>
-        <td>${user.role_id}</td>
-        <td>
-          <button class="editUserBtn">Edit</button>
-          <button class="deleteUserBtn">Delete</button>
-        </td>
-      `;
-
-      row.querySelector(".editUserBtn").addEventListener("click", () => {
-        userIdInput.value = user.id;
-        fullNameInput.value = user.full_name;
-        adminEmailInput.value = user.email;
-        roleIdInput.value = user.role_id;
-      });
-
-      row.querySelector(".deleteUserBtn").addEventListener("click", async () => {
-        const confirmDelete = confirm("Are you sure you want to delete this user?");
-        if (!confirmDelete) return;
-
-        const token = localStorage.getItem("tinyguardToken");
-
-        const response = await fetch(`${API_BASE_URL}/users/${user.id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          alert("Failed to delete user.");
-          return;
-        }
-
-        loadUsers();
-      });
-
-      usersTableBody.appendChild(row);
-    });
+    allUsers = users;
+    renderUsers(allUsers);
+    return;
 
   } catch (error) {
     console.error(error);
   }
 }
 
-window.editUser = function(id, fullName, email, roleId) {
-  userIdInput.value = id;
-  fullNameInput.value = fullName;
-  adminEmailInput.value = email;
-  roleIdInput.value = roleId;
-};
 
-window.deleteUser = async function(id) {
-  const token = localStorage.getItem("tinyguardToken");
+function renderUsers(users) {
+  usersTableBody.innerHTML = "";
 
-  await fetch(`${API_BASE_URL}/users/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+  users.forEach(user => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${user.id}</td>
+      <td>${user.full_name}</td>
+      <td>${user.email}</td>
+      <td>${user.role_id}</td>
+      <td>
+        <button class="editUserBtn">Edit</button>
+        <button class="deleteUserBtn">Delete</button>
+      </td>
+    `;
+
+    row.querySelector(".editUserBtn").addEventListener("click", () => {
+      userIdInput.value = user.id;
+      fullNameInput.value = user.full_name;
+      adminEmailInput.value = user.email;
+      roleIdInput.value = user.role_id;
+    });
+
+    row.querySelector(".deleteUserBtn").addEventListener("click", async () => {
+      const confirmDelete = confirm("Are you sure you want to delete this user?");
+      if (!confirmDelete) return;
+
+      const token = localStorage.getItem("tinyguardToken");
+
+      const response = await fetch(`${API_BASE_URL}/users/${user.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        alert("Failed to delete user.");
+        return;
+      }
+
+      loadUsers();
+    });
+
+    usersTableBody.appendChild(row);
   });
-
-  loadUsers();
-};
+}
 
 if (saveUserBtn) {
   saveUserBtn.addEventListener("click", async () => {
@@ -354,4 +342,17 @@ if (clearBtn) {
 
 if (user && user.role_id === 1) {
   loadUsers();
+}
+
+if (userSearchInput) {
+  userSearchInput.addEventListener("input", () => {
+    const searchTerm = userSearchInput.value.toLowerCase();
+
+    const filteredUsers = allUsers.filter(user =>
+      user.full_name.toLowerCase().includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm)
+    );
+
+    renderUsers(filteredUsers);
+  });
 }
