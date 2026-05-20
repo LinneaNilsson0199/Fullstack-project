@@ -3,6 +3,7 @@ const cors = require("cors");
 const fs = require("fs");
 const multer = require("multer");
 require("dotenv").config();
+const bcrypt = require("bcrypt");
 
 const AhoCorasick = require("./search");
 const pool = require("./db");
@@ -122,6 +123,31 @@ app.delete("/users/:id", authenticate, requireAdmin, async (req, res) => {
     res.json({ message: "User deleted" });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete user" });
+  }
+});
+
+app.post("/users", authenticate, requireAdmin, async (req, res) => {
+  try {
+    const { full_name, email, password, role_id } = req.body;
+
+    if (!full_name || !email || !password || !role_id) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const password_hash = await bcrypt.hash(password, 10);
+
+    const result = await pool.query(
+      `
+      INSERT INTO users (full_name, email, password_hash, role_id)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, full_name, email, role_id, created_at;
+      `,
+      [full_name, email, password_hash, role_id]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create user" });
   }
 });
 
