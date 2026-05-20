@@ -297,20 +297,47 @@ window.deleteUser = async function(id) {
 
 if (saveUserBtn) {
   saveUserBtn.addEventListener("click", async () => {
+
     const token = localStorage.getItem("tinyguardToken");
 
-    await fetch(`${API_BASE_URL}/users/${userIdInput.value}`, {
-      method: "PUT",
+    const id = userIdInput.value;
+
+    const url = id
+      ? `${API_BASE_URL}/users/${id}`
+      : `${API_BASE_URL}/users`;
+
+    const method = id ? "PUT" : "POST";
+
+    const userData = {
+      full_name: fullNameInput.value,
+      email: adminEmailInput.value,
+      role_id: Number(roleIdInput.value)
+    };
+
+
+    if (!id) {
+      userData.password = document.getElementById("adminPassword").value;
+    }
+
+    const response = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({
-        full_name: fullNameInput.value,
-        email: adminEmailInput.value,
-        role_id: Number(roleIdInput.value)
-      })
+      body: JSON.stringify(userData)
     });
+
+    if (!response.ok) {
+      alert("Failed to save user.");
+      return;
+    }
+
+    userIdInput.value = "";
+    fullNameInput.value = "";
+    adminEmailInput.value = "";
+    document.getElementById("adminPassword").value = "";
+    roleIdInput.value = "1";
 
     loadUsers();
   });

@@ -284,6 +284,75 @@ PARENT DASHBOARD
   background: var(--green-soft);
   border-radius: 12px;
 }
+
+/*-------------------
+ADMIN DASHBOARD
+-------------------*/
+#adminDashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#adminDashboard h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 2rem;
+  color: var(--green-dark);
+}
+
+#adminDashboard h3 {
+  color: var(--green-dark);
+  margin-bottom: 1rem;
+}
+
+#adminDashboard input,
+#adminDashboard select {
+  padding: 0.9rem 1rem;
+  border: 1px solid #b7c7b5;
+  border-radius: 12px;
+  margin: 0.3rem;
+  font-size: 1rem;
+  background: white;
+}
+
+#adminDashboard button {
+  padding: 0.9rem 1.3rem;
+  border-radius: 12px;
+  border: none;
+  background: #6d9467;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0.3rem;
+}
+
+#adminDashboard button:hover {
+  background: #173f2a;
+}
+
+#adminDashboard table {
+  width: 100%;
+  margin-top: 2rem;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.5);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+#adminDashboard th {
+  background: var(--green-soft);
+  color: var(--green-dark);
+  text-align: left;
+  padding: 1rem;
+}
+
+#adminDashboard td {
+  padding: 1rem;
+  border-bottom: 1px solid #dce6d7;
+}
+
+#adminDashboard tr:hover {
+  background: rgba(255,255,255,0.7);
+}
 /*-------------------
 RESPONSIVE DESIGN
 -------------------*/
