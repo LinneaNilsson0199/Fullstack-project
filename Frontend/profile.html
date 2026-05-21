@@ -22,7 +22,7 @@
             </nav>
         </header>
         <main>
-            <section id="adminDashboard" class="hidden">
+        <section id="adminDashboard" class="hidden">
             <h2>Admin Dashboard</h2>
 
             <h3>Add or Update User</h3>
@@ -57,9 +57,9 @@
                 <tbody id="usersTableBody"></tbody>
             </table>
             </div>
-            </section>
+        </section>
 
-            <section id="parentDashboard" class="hidden">
+        <section id="parentDashboard" class="hidden">
             <h2>Parent Dashboard</h2>
 
             <div id="connectChildBox">
@@ -71,10 +71,28 @@
 
             <h3>Connected children</h3>
             <div id="childrenList"></div>
-            </section>
+                        <h3>Child statistics</h3>
+            <div id="statisticsFilters">
+                <button data-period="week">Last week</button>
+                <button data-period="year">Last year</button>
+                <button data-period="all">All time</button>
+            </div>
+
+            <div id="childStatistics">
+                <p>Select a child to view statistics.</p>
+            </div>
+            <div class="chart-card">
+                 <canvas id="badWordsChart"></canvas>
+                </div>
+        </section>
          </main>  
     </div>
 
+
+          
+         </main>  
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="scripts/login_signup_script.js"></script>
 <script type="module" src="scripts/parent_child_connect.js"></script>
 </body>
