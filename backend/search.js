@@ -1,3 +1,4 @@
+// ACO-CORASICK ALGORITHM TO CHECK FOR BAD WORS USING THE "WORDS.TXT" FILE
 class AhoCorasickNode {
   constructor() {
     this.children = new Map();
