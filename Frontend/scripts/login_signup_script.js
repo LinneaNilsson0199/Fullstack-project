@@ -17,17 +17,17 @@ const loggedInUploadBox = document.getElementById("loggedInUploadBox");
 function showLoginForm() {
   if (!authButtons || !loginForm || !signupForm) return;
 
-  authButtons.classList.add("hidden");
-  signupForm.classList.add("hidden");
-  loginForm.classList.remove("hidden");
+  hideElement(authButtons)
+  hideElement(signupForm)
+  showElement(loginForm)
 }
 
 function showSignupForm() {
   if (!authButtons || !loginForm || !signupForm) return;
 
-  authButtons.classList.add("hidden");
-  loginForm.classList.add("hidden");
-  signupForm.classList.remove("hidden");
+  hideElement(authButtons)
+  hideElement(loginForm)
+  showElement(signupForm)
 }
 
 if (showLoginBtn) {
@@ -46,23 +46,31 @@ if (switchToLogin) {
   switchToLogin.addEventListener("click", showLoginForm);
 }
 
-console.log("login_signup_script.js loaded");
-console.log("loginForm:", loginForm);
-console.log("signupForm:", signupForm);
+function showElement(element) {
+  if (element) element.classList.remove("hidden");
+}
+
+function hideElement(element) {
+  if (element) element.classList.add("hidden");
+}
 
 // PROTECT FILEINPUT PAGE
-if (currentPage === "fileinput.html" && !user) {
-  alert("You must be logged in to access this page.");
-  window.location.href = "index.html";
+function protectPages() {
+  if (currentPage === "fileinput.html" && !user) {
+    alert("You must be logged in to access this page.");
+    window.location.href = "index.html";
+  }
+  // PROTECT PROFILE PAGE
+
+  if (
+    currentPage === "profile.html" &&
+    (!user || (user.role_id !== 1 && user.role_id !== 2))
+  ) {
+    alert("Only admins and parents can access this page.");
+    window.location.href = "index.html";
+  }
 }
-// PROTECT PROFILE PAGE
-if (
-  currentPage === "profile.html" &&
-  (!user || (user.role_id !== 1 && user.role_id !== 2))
-) {
-  alert("Only admins and parents can access this page.");
-  window.location.href = "index.html";
-}
+protectPages();
 
 const fileInputLinks = document.querySelectorAll('a[href="fileinput.html"]');
 fileInputLinks.forEach((link) => {
@@ -77,23 +85,19 @@ const loginLink = document.querySelector('a[href="login.html"]');
 const signupLink = document.querySelector('a[href="signup.html"]');
 
 if (user) {
-  if (loginLink) loginLink.style.display = "none";
-  if (signupLink) signupLink.style.display = "none";
-}
-if (user) {
 
-  if (authButtons) authButtons.classList.add("hidden");
-  if (loginForm) loginForm.classList.add("hidden");
-  if (signupForm) signupForm.classList.add("hidden");
+  if (authButtons) hideElement(authButtons)
+  if (loginForm) hideElement(loginForm)
+  if (signupForm) hideElement(signupForm)
 
   if (loggedInUploadBox) {
-    loggedInUploadBox.classList.remove("hidden");
+    showElement(loggedInUploadBox)
   }
 
 } else {
 
   if (loggedInUploadBox) {
-    loggedInUploadBox.classList.add("hidden");
+    hideElement(loggedInUploadBox)
   }
 
 }
@@ -101,7 +105,6 @@ if (user) {
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Login submit fired");
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -121,7 +124,6 @@ if (loginForm) {
       });
 
       const data = await response.json();
-      console.log("Login response:", data);
 
       if (!response.ok) {
         alert(data.error || "Login failed");
@@ -132,7 +134,6 @@ if (loginForm) {
       localStorage.setItem("tinyguardToken", data.token);
       window.location.href = "index.html";
     } catch (error) {
-      console.error("Login request failed:", error);
       alert("Could not connect to server.");
     }
   });
@@ -142,15 +143,12 @@ if (loginForm) {
 if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Signup submit fired");
 
     const full_name = document.getElementById("name").value.trim();
     const email = document.getElementById("signupEmail").value.trim();
     const password = document.getElementById("signupPassword").value.trim();
     const confirmPassword = document.getElementById("confirmPassword").value.trim();
     const selectedRole = document.querySelector('input[name="role"]:checked');
-
-    console.log("Selected role:", selectedRole ? selectedRole.value : null);
 
     if (!full_name || !email || !password || !confirmPassword) {
       alert("Please fill in all fields.");
@@ -168,8 +166,6 @@ if (signupForm) {
     }
 
     try {
-      console.log("Sending request to:", `${API_BASE_URL}/register`);
-
       const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: {
@@ -184,7 +180,6 @@ if (signupForm) {
       });
 
       const data = await response.json();
-      console.log("Signup response:", data);
 
       if (!response.ok) {
         alert(data.error || "Signup failed");
@@ -196,7 +191,6 @@ if (signupForm) {
       alert("Account created successfully!");
       window.location.href = "index.html";
     } catch (error) {
-      console.error("Signup request failed:", error);
       alert("Could not connect to server.");
     }
   });
