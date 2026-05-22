@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 
 module.exports = (app, pool) => {
-  
+  // REGISTER ROUTE WITH VALIDATION
   app.post("/register", async (req, res) => {
  
     try {

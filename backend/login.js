@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("./authenticate");
 
 module.exports = (app, pool) => {
+  // LOGIN ROUTE WITH VALIDATION
   app.post("/login", async (req, res) => {
     try {
       const { email, password } = req.body;

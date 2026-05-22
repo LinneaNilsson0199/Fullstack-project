@@ -32,12 +32,11 @@ const words = fs
 
 const automaton = new AhoCorasick(words);
 
-// Public routes
+// PUBLIC ROUTES
 require("./login")(app, pool);
 require("./register")(app, pool);
 
-// Protected routes
-
+// PROTECTED ROUTES
 // FILE SCAN
 app.post("/scan", authenticate, upload.single("file"), async (req, res) => {
   try {

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// CREATE JWT TOKEN FOR USER
 function createToken(user) {
   return jwt.sign(
     {
@@ -12,6 +13,7 @@ function createToken(user) {
   );
 }
 
+// AUTHENTICATION 
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
 
