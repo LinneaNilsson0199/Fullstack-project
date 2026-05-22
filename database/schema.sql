@@ -69,14 +69,9 @@ create table scan_results (
 id SERIAL primary key,
 child_user_id INT not null references users(id) ON DELETE CASCADE,
 file_name VARCHAR(255) not null,
-detected_text TEXT,
 match_count INT default 0,
-severity VARCHAR(20) default 'low',
 scanned_at TIMESTAMP default CURRENT_TIMESTAMP,
-created_at TIMESTAMP default CURRENT_TIMESTAMP,
--- Only allow known severity values
-CONSTRAINT scan_results_severity_check
-CHECK (severity IN ('low', 'medium', 'high'))
+created_at TIMESTAMP default CURRENT_TIMESTAMP
 );
 
 
@@ -124,13 +119,11 @@ VALUES (
 
 
 -- Insert test scan result --
-INSERT INTO scan_results (child_user_id, file_name, detected_text, match_count, severity)
+INSERT INTO scan_results (child_user_id, file_name, match_count)
 VALUES (
     (SELECT id FROM users WHERE email = 'leo@test.com'),
     'chat.txt',
-    'bad word example',
-    2,
-    'high'
+    2
 );
 
 
@@ -140,9 +133,7 @@ SELECT
     p.full_name AS parent_name,
     c.full_name AS child_name,
     s.file_name,
-    s.detected_text,
     s.match_count,
-    s.severity,
     s.scanned_at
 FROM parent_child pc
 JOIN users p ON pc.parent_user_id = p.id
@@ -174,12 +165,6 @@ VALUES ('Test User', '', 'hashed', 1);
 -- Should give error
 INSERT INTO users (full_name, email, password_hash, role_id)
 VALUES ('Test User', 'test@test.com', '', 1);
-
-
--- Test: Cannot use invalid severity --
--- Should give error
-INSERT INTO scan_results (child_user_id, file_name, detected_text, match_count, severity)
-VALUES (1, 'bad.txt', 'test', 1, 'extreme');
 
 
 -- Test: Parent cannot be same as child --
