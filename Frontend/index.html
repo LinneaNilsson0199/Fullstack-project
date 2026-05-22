@@ -28,13 +28,13 @@
     </header>
 
     <main class="front">
-        <img id="family-img" src="assets/family.png" alt="Family sitting infront of a computer">
+      <img id="family-img" src="assets/family.png" alt="Family sitting infront of a computer">
 
       <section class="frontpage-content">
         <div class="intro-card">
           <div class="intro-copy">
             <h2>Welcome to TinyGuard!</h2>
-            <p> Upload a file to get started. TinyGuard helps you securely analyze
+            <p>Upload a file to get started. TinyGuard helps you securely analyze
               and manage your files with ease.</p>
 
             <ul class="feature-list">
@@ -44,33 +44,32 @@
             </ul>
 
           </div>
-
+            <!-- AUTH SECTION -->
             <aside class="action-panel">
-
-
                 <div id="authButtons" class="auth-state-box">
                     <i class="fa-solid fa-lock auth-icon"></i>
+
                     <h2>Login required</h2>
+
                     <p>Log in or create an account to upload and analyze files.</p>
 
                     <div class="auth-btn-group">
-                        <button id="showLoginBtn" class="green-btn">Login</button>
-                        <button id="showSignupBtn" class="white-btn">Sign up</button>
+                        <button type="button" id="showLoginBtn" class="green-btn">Login</button>
+                        <button type="button" id="showSignupBtn" class="white-btn">Sign up</button>
                     </div>
                 </div>
 
                 <!-- LOGIN FORM -->
                 <form id="loginForm" class="hidden auth-form auth-state-box">
                     <h2>Login</h2>
-
                     <input type="email" id="email" placeholder="Email" required>
                     <input type="password" id="password" placeholder="Password" required>
 
                     <button type="submit" class="green-btn">Login</button>
 
                     <p class="switch-text">
-                    Don't have an account?
-                    <span id="switchToSignup">Sign up</span>
+                      Don't have an account?
+                      <span id="switchToSignup">Sign up</span>
                     </p>
                 </form>
 
@@ -103,14 +102,15 @@
                     </p>
                 </form>
 
+                <!-- FILE UPLOAD -->
                 <div id="loggedInUploadBox" class="upload-box hidden auth-state-box">
-                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-                        <p>Insert file</p>
-                        <button id="uploadBtn" type="button">Upload file</button>
+                  <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                  <p>Insert file</p>
+                  <button id="uploadBtn" type="button">Upload file</button>
 
-                        <input type="file" id="Inputfile" accept=".txt" hidden/>
-                        <p id="file-name"></p>
-                        <p id="scan-result"></p>
+                  <input type="file" id="Inputfile" accept=".txt" hidden />
+                  <p id="file-name"></p>
+                  <p id="scan-result"></p>
 
                 </div>
 

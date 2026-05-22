@@ -177,7 +177,7 @@ MAIN CONTENT
   min-height: 320px;
   border: 2px dashed #9eb9a4;
   border-radius: 18px;
-  background: rgba(255,255,255,0.52);
+  background: rgba(255, 255, 255, 0.52);
 }
 
 
@@ -333,7 +333,7 @@ ADMIN DASHBOARD
   width: 100%;
   margin-top: 2rem;
   border-collapse: collapse;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 18px;
   overflow: hidden;
   min-width: 700px;
@@ -352,7 +352,7 @@ ADMIN DASHBOARD
 }
 
 #adminDashboard tr:hover {
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
 }
 .admin-table-wrapper {
   width: 100%;

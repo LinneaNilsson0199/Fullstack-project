@@ -14,94 +14,96 @@
     <div class="page"> 
         <header class="page_head">
             <div class="head_brand">
-                <img id ="web_logo" src="assets/tinyguard-logo.svg" alt="TinyGuard logo">
+                <img id="web_logo" src="assets/tinyguard-logo.svg" alt="TinyGuard logo">
                 <h1>TinyGuard</h1>
             </div>
             <nav class="head_nav">
                 <a href="index.html">Home</a>
-
-                <a href="profile.html"><i class="fa-solid fa-circle-user"></i></a>
-                <button id="logoutBtn">Logout</button>
+                <a href="profile.html" class="user-icon" aria-label="User profile"><i class="fa-solid fa-circle-user"></i></a>
+                <button type="button" id="logoutBtn">Logout</button>
             </nav>
         </header>
 
-    <main>
-        <section class="about-main">
-            <div class="about-card">
+        <main>
+            <section class="about-main">
+                <div class="about-card">
 
-            <section class="about-intro">
-            <h1>About TinyGuard</h1>
+                    <section class="about-intro">
+                        <h1>About TinyGuard</h1>
 
-            <p>
-                TinyGuard is a digital safety platform designed to help protect
-                children online by detecting harmful and inappropriate language
-                in uploaded text files. The project focuses on creating a safer
-                online environment for families through secure account systems,
-                file scanning, and parent-child connections.
-            </p>
-        </section>
-        <section>
+                        <p>TinyGuard is a digital safety platform designed to help protect
+                            children online by detecting harmful and inappropriate language
+                            in uploaded text files. The project focuses on creating a safer
+                            online environment for families through secure account systems,
+                            file scanning, and parent-child connections.
+                        </p>
+                    </section>
 
-            <h2>Team Information</h2>
-            <div class="team-grid">
-                <div class="team-member">
-                    <h3>Team Name</h3>
-                    <p>TinyGuard Developers</p>
+                    <section>
+                        <h2>Team Information</h2>
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <h3>Team Name</h3>
+                                <p>TinyGuard Developers</p>
+                            </div>
+
+                            <div class="team-member">
+                                <h3>Gabriella Johansson</h3>
+                                <p><strong>Focus Area:</strong> Frontend Development</p>
+                            </div>
+
+                            <div class="team-member">
+                                <h3>Linnea Nilsson</h3>
+                                <p><strong>Focus Area:</strong> Backend Development</p>
+                            </div>
+
+                            <div class="team-member">
+                                <h3>Jessie Jarl Nilsson</h3>
+                                <p><strong>Focus Area:</strong> Database Management</p>
+                            </div>
+                            
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>Frontend</h3>
+                        <p>The frontend of TinyGuard was developed using HTML, CSS, and JavaScript to create a responsive and user-friendly interface for both parents and children.
+                            The frontend includes features such as account registration, login functionality, file uploads, and profile management.
+                            Users can upload text files directly through the website, while the interface dynamically updates depending on whether the user is logged in or not.
+                            The design was built to work across desktop, tablet, and mobile devices while maintaining a clean and secure user experience.</p>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>Backend</h3>
+                        <p>The backend of TinyGuard was built using Node.js and Express. It handles the server-side logic, authentication, API routes, and communication between the frontend and database.
+                            The backend processes user login and registration requests, securely hashes passwords using bcrypt, and protects routes through authentication middleware.
+                            It also handles text file scanning using the Aho-Corasick search algorithm to detect harmful or inappropriate words efficiently.
+                            In addition, the backend manages parent-child account connections and communication with the PostgreSQL database.</p>
+                    </section>
+                    
+                    <section class="about-section">
+                        <h3>Database</h3>
+                        <p>TinyGuard uses PostgreSQL as its database system to securely store user information, account roles, and parent-child relationships.
+                        The database structure was designed using relational tables and role-based connections to support secure authentication and account management.
+                        User passwords are stored as hashed values for improved security, and the database is connected to the backend through environment variables and a PostgreSQL connection string.
+                        PostgreSQL was chosen because of its reliability, structured relational design, and strong support for secure data handling.</p>
+                    </section>
+
+                    <section>
+                        <h2>Technologies Used</h2>
+
+                        <ul class="tech-list">
+                            <li>Frontend: HTML, CSS, JavaScript</li>
+                            <li>Backend: Node.js, Express</li>
+                            <li>Database: PostgreSQL</li>
+                            <li>Cloud Hosting: Render</li>
+                        </ul>
+                    </section>
                 </div>
-
-                <div class="team-member">
-                <h3>Gabriella Johansson</h3>
-                <p><strong>Focus Area:</strong> Frontend Development</p>
-                </div>
-
-                <div class="team-member">
-                <h3>Linnea Nilsson</h3>
-                <p><strong>Focus Area:</strong> Backend Development</p>
-                </div>
-
-                <div class="team-member">
-                <h3>Jessie Jarl Nilsson</h3>
-                <p><strong>Focus Area:</strong> Database Management</p>
-                </div>
-        
-            </div>
-
-        </section>
-        <section class="about-section">
-        <h3>Frontend</h3>
-        <p> The frontend of TinyGuard was developed using HTML, CSS, and JavaScript to create a responsive and user-friendly interface for both parents and children.
-            The frontend includes features such as account registration, login functionality, file uploads, and profile management.
-            Users can upload text files directly through the website, while the interface dynamically updates depending on whether the user is logged in or not.
-            The design was built to work across desktop, tablet, and mobile devices while maintaining a clean and secure user experience.</p>
-        </section>
-         <section class="about-section">
-        <h3>Backend</h3>
-        <p>The backend of TinyGuard was built using Node.js and Express. It handles the server-side logic, authentication, API routes, and communication between the frontend and database.
-            The backend processes user login and registration requests, securely hashes passwords using bcrypt, and protects routes through authentication middleware.
-            It also handles text file scanning using the Aho-Corasick search algorithm to detect harmful or inappropriate words efficiently.
-            In addition, the backend manages parent-child account connections and communication with the PostgreSQL database.</p>
-        </section>
-         <section class="about-section">
-            <h3>Database</h3>
-            <p>TinyGuard uses PostgreSQL as its database system to securely store user information, account roles, and parent-child relationships.
-            The database structure was designed using relational tables and role-based connections to support secure authentication and account management.
-            User passwords are stored as hashed values for improved security, and the database is connected to the backend through environment variables and a PostgreSQL connection string.
-            PostgreSQL was chosen because of its reliability, structured relational design, and strong support for secure data handling.</p>
-        </section>
-
-        <section>
-            <h2>Technologies Used</h2>
-
-            <ul class="tech-list">
-                <li>Frontend: HTML, CSS, JavaScript</li>
-                <li>Backend: Node.js, Express</li>
-                <li>Database: PostgreSQL</li>
-                <li>Cloud Hosting: Render</li>
-            </ul>
-        </section>
-        </div>
+            </section>
         </main>
     </div>
+
     <script type="module" src="scripts/script.js"></script>
     <script type="module" src="scripts/login_signup_script.js"></script>
 

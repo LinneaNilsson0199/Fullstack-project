@@ -6,14 +6,15 @@ const user = JSON.parse(localStorage.getItem("tinyguardUser"));
 const adminDashboard = document.getElementById("adminDashboard");
 const parentDashboard = document.getElementById("parentDashboard");
 const userSearchInput = document.getElementById("userSearchInput");
+const token = localStorage.getItem("tinyguardToken");
 let allUsers = [];
 
 
-if (user.role_id === 1) {
+if (user && user.role_id === 1) {
   adminDashboard.classList.remove("hidden");
 }
 
-if (user.role_id === 2) {
+if (user && user.role_id === 2) {
   parentDashboard.classList.remove("hidden");
 }
 
@@ -24,7 +25,6 @@ const connectChildMessage = document.getElementById("connectChildMessage");
 if (connectChildBtn) {
   connectChildBtn.addEventListener("click", async () => {
     const childEmail = childEmailInput.value.trim();
-    const token = localStorage.getItem("tinyguardToken");
 
     if (!childEmail) {
       connectChildMessage.textContent = "Please enter the child's email.";
@@ -65,7 +65,6 @@ const filterButtons = document.querySelectorAll("#statisticsFilters button");
 let selectedChildId = null;
 
 async function loadChildren() {
-  const token = localStorage.getItem("tinyguardToken");
 
   try {
     const response = await fetch(`${API_BASE_URL}/my-children`, {
@@ -112,7 +111,6 @@ async function loadChildren() {
 }
 
 async function loadChildStatistics(childId, period) {
-  const token = localStorage.getItem("tinyguardToken");
 
   try {
     const response = await fetch(
@@ -148,40 +146,6 @@ async function loadChildStatistics(childId, period) {
         </div>
       </div>
     `;
-//temporary data for testing chart
-  // let demoChartData = [];
-
-  // if (period === "week") {
-  //   demoChartData = [
-  //     { date_group: "2026-05-18", bad_words: 8 },
-  //     { date_group: "2026-05-19", bad_words: 3 },
-  //     { date_group: "2026-05-20", bad_words: 2 },
-  //     { date_group: "2026-05-21", bad_words: 5 },
-  //     { date_group: "2026-05-22", bad_words: 1 },
-  //     { date_group: "2026-05-23", bad_words: 8 },
-  //     { date_group: "2026-05-24", bad_words: 5 }
-  //   ];
-  // } else if (period === "year") {
-  //   demoChartData = [
-  //     { date_group: "2026-01-05", bad_words: 4 },
-  //     { date_group: "2026-02-10", bad_words: 7 },
-  //     { date_group: "2026-03-15", bad_words: 3 },
-  //     { date_group: "2026-04-20", bad_words: 9 },
-  //     { date_group: "2026-05-18", bad_words: 6 }
-  //   ];
-  // } else if (period === "all") {
-  //   demoChartData = [
-  //     { date_group: "2025-09-08", bad_words: 5 },
-  //     { date_group: "2025-11-18", bad_words: 8 },
-  //     { date_group: "2026-01-05", bad_words: 4 },
-  //     { date_group: "2026-03-15", bad_words: 3 },
-  //     { date_group: "2026-05-18", bad_words: 6 }
-  //   ];
-  // }
-
-  // renderBadWordsChart(demoChartData, period);
-
-  // Real backend data
   renderBadWordsChart(data.chart_data, period);
   } catch (error) {
     console.error(error);
@@ -213,8 +177,6 @@ const clearBtn = document.getElementById("clearBtn");
 
 async function loadUsers() {
   if (!usersTableBody) return;
-
-  const token = localStorage.getItem("tinyguardToken");
 
   try {
     const response = await fetch(`${API_BASE_URL}/users`, {
@@ -262,8 +224,6 @@ function renderUsers(users) {
       const confirmDelete = confirm("Are you sure you want to delete this user?");
       if (!confirmDelete) return;
 
-      const token = localStorage.getItem("tinyguardToken");
-
       const response = await fetch(`${API_BASE_URL}/users/${user.id}`, {
         method: "DELETE",
         headers: {
@@ -285,8 +245,6 @@ function renderUsers(users) {
 
 if (saveUserBtn) {
   saveUserBtn.addEventListener("click", async () => {
-
-    const token = localStorage.getItem("tinyguardToken");
 
     const id = userIdInput.value;
 

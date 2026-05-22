@@ -1,53 +1,53 @@
-.hidden{
-    display:none !important;
+.hidden {
+    display: none !important;
 }
 
-.auth-form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.auth-form input{
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #ccc;
+.auth-form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
 }
 
-.auth-btn-group{
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    margin-top:20px;
+.auth-btn-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.green-btn{
+.green-btn {
     background:#6d9467;
     color:white;
-    border:none;
-    padding:14px 28px;
-    border-radius:14px;
-    cursor:pointer;
-    font-weight:600;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.white-btn{
+.white-btn {
     background:white;
-    border:1px solid #6d9467;
-    padding:14px 28px;
-    border-radius:14px;
-    cursor:pointer;
-    font-weight:600;
+    border: 1px solid #6d9467;
+    padding: 14px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.switch-text span{
+.switch-text span {
     color:#2d5a35;
-    font-weight:bold;
-    cursor:pointer;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.auth-icon{
-    font-size:80px;
-    margin-bottom:20px;
-    color:#184b2d;
+.auth-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    color: #184b2d;
 }

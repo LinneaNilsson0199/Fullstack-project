@@ -12,85 +12,88 @@
     <div class="page"> 
         <header class="page_head">
             <div class="head_brand">
-                <img id ="web_logo" src="assets/tinyguard-logo.svg" alt="TinyGuard logo">
+                <img id="web_logo" src="assets/tinyguard-logo.svg" alt="TinyGuard logo">
                 <h1>TinyGuard</h1>
             </div>
             <nav class="head_nav">
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
-                <button id="logoutBtn">Logout</button>
+                <button type="button" id="logoutBtn">Logout</button>
             </nav>
         </header>
         <main>
-        <section id="adminDashboard" class="hidden">
-            <h2>Admin Dashboard</h2>
+            <!--ADMIN DASHBOARD-->
+            <section id="adminDashboard" class="hidden">
+                <h2>Admin Dashboard</h2>
 
-            <h3>Add or Update User</h3>
+                <h3>Add or Update User</h3>
 
-            <input type="hidden" id="userId">
+                <input type="hidden" id="userId">
 
-            <input type="text" id="fullName" placeholder="Full name">
-            <input type="email" id="adminEmail" placeholder="Email">
-            <input type="password" id="adminPassword" placeholder="Password">
+                <input type="text" id="fullName" placeholder="Full name">
+                <input type="email" id="adminEmail" placeholder="Email">
+                <input type="password" id="adminPassword" placeholder="Password">
 
-            <select id="roleId">
-                <option value="1">Admin</option>
-                <option value="2">Parent</option>
-                <option value="3">Child</option>
-            </select>
+                <select id="roleId">
+                    <option value="1">Admin</option>
+                    <option value="2">Parent</option>
+                    <option value="3">Child</option>
+                </select>
 
-            <button id="saveUserBtn" type="button">Save User</button>
-            <button id="clearBtn" type="button">Clear</button>
-            <input type="text" id="userSearchInput" placeholder="Search users by name or email">
-            <h3>Users</h3>
-            <div class="admin-table-wrapper">
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Full name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody id="usersTableBody"></tbody>
-            </table>
-            </div>
-        </section>
+                <button id="saveUserBtn" type="button">Save User</button>
+                <button id="clearBtn" type="button">Clear</button>
+                <input type="text" id="userSearchInput" placeholder="Search users by name or email">
+                
+                <h3>Users</h3>
 
-        <section id="parentDashboard" class="hidden">
-            <h2>Parent Dashboard</h2>
-
-            <div id="connectChildBox">
-                <h3>Connect child account</h3>
-                <input type="email" id="childEmail" placeholder="Child email">
-                <button id="connectChildBtn">Connect child</button>
-                <p id="connectChildMessage"></p>
-            </div>
-
-            <h3>Connected children</h3>
-            <div id="childrenList"></div>
-                        <h3>Child statistics</h3>
-            <div id="statisticsFilters">
-                <button data-period="week">Last week</button>
-                <button data-period="year">Last year</button>
-                <button data-period="all">All time</button>
-            </div>
-
-            <div id="childStatistics">
-                <p>Select a child to view statistics.</p>
-            </div>
-            <div class="chart-card">
-                 <canvas id="badWordsChart"></canvas>
+                <div class="admin-table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
                 </div>
-        </section>
-         </main>  
-    </div>
+            </section>
 
+            <!--PARENT DASHBOARD-->
 
-          
-         </main>  
+            <section id="parentDashboard" class="hidden">
+                <h2>Parent Dashboard</h2>
+
+                <div id="connectChildBox">
+                    <h3>Connect child account</h3>
+                    <input type="email" id="childEmail" placeholder="Child email">
+                    <button type="button" id="connectChildBtn">Connect child</button>
+                    <p id="connectChildMessage"></p>
+                </div>
+
+                <h3>Connected children</h3>
+
+                <div id="childrenList"></div>
+                <h3>Child statistics</h3>
+                <div id="statisticsFilters">
+                    <button type="button" data-period="week">Last week</button>
+                    <button type="button" data-period="year">Last year</button>
+                    <button type="button" data-period="all">All time</button>
+                </div>
+
+                <div id="childStatistics">
+                    <p>Select a child to view statistics.</p>
+                </div>
+
+                <div class="chart-card">
+                    <canvas id="badWordsChart"></canvas>
+                </div>
+
+            </section>
+        </main>  
     </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="scripts/login_signup_script.js"></script>
