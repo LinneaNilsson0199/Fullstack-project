@@ -51,13 +51,12 @@ app.post("/scan", authenticate, upload.single("file"), async (req, res) => {
 
     await pool.query(
       `
-      INSERT INTO scan_results (child_user_id, file_name, detected_text, match_count)
-      VALUES ($1, $2, $3, $4);
+      INSERT INTO scan_results (child_user_id, file_name, match_count)
+      VALUES ($1, $2, $3);
       `,
       [
         req.user.id,
         req.file.originalname,
-        null,
         scanResult.match_count
       ]
     );
@@ -294,10 +293,7 @@ app.get("/statistics/child/:childId", authenticate, async (req, res) => {
       `
       SELECT
         COUNT(scan_results.id) AS total_scans,
-        COALESCE(SUM(scan_results.match_count), 0) AS total_bad_words,
-        COUNT(*) FILTER (WHERE scan_results.severity = 'low') AS low_count,
-        COUNT(*) FILTER (WHERE scan_results.severity = 'medium') AS medium_count,
-        COUNT(*) FILTER (WHERE scan_results.severity = 'high') AS high_count
+        COALESCE(SUM(scan_results.match_count), 0) AS total_bad_words
       FROM scan_results
       JOIN parent_child
         ON scan_results.child_user_id = parent_child.child_user_id
