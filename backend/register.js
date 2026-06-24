@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { createToken } = require("./authenticate");
 
 
 module.exports = (app, pool) => {
@@ -53,9 +54,17 @@ module.exports = (app, pool) => {
 
       console.log("User created:", result.rows[0]);
 
+      const token = createToken(result.rows[0]);
+
       res.status(201).json({
         message: "User registered successfully",
-        user: result.rows[0],
+        token,
+        user: {
+          id: result.rows[0].id,
+          full_name: result.rows[0].full_name,
+          email: result.rows[0].email,
+          role_id: result.rows[0].role_id,
+        },
       });
     } catch (error) {
       console.error("Register error:", error);
